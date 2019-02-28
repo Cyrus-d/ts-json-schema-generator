@@ -19,8 +19,9 @@
         "sourceMap": true,
         "pretty": true,
         "watch": false,
-        "typeRoots": ["node_modules/@types"],
-        "sourceRoot": "src",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
         "outDir": "dist"
     },
     "files": [
@@ -28,6 +29,7 @@
         "index.ts"
     ],
     "include": [
+        "app.ts",
         "./src/**/*.ts",
         "./factory/**/*.ts",
         "./test/**.ts"
