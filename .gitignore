@@ -2,6 +2,9 @@
 coverage/
 dist/
 node_modules/
+<<<<<<< HEAD
 test.ts
 yarn-error.log
 app.ts
+=======
+>>>>>>> 82600fa4f49b6a014c822bea55b859634c225005

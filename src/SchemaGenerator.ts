@@ -3,150 +3,142 @@ import { NoRootTypeError } from "./Error/NoRootTypeError";
 import { Context, NodeParser } from "./NodeParser";
 import { Definition } from "./Schema/Definition";
 import { Schema } from "./Schema/Schema";
-import { TopRefNodeParser } from "./TopRefNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { TypeFormatter } from "./TypeFormatter";
 import { StringMap } from "./Utils/StringMap";
 import { localSymbolAtNode, symbolAtNode } from "./Utils/symbolAtNode";
+import { notUndefined } from "./Utils/notUndefined";
 
 export class SchemaGenerator {
-    private allTypes: Map<string, ts.Node>;
-    private prioritizedFiles: ts.SourceFile[];
-    private unPrioritizedFiles: ts.SourceFile[];
-    private nodeInfo: { node: ts.Node; name: string; exported: boolean; kind: ts.SyntaxKind }[] = [];
-
     public constructor(
-        private program: ts.Program,
-        private nodeParser: NodeParser,
-        private typeFormatter: TypeFormatter
-    ) {
-        this.allTypes = new Map<string, ts.Node>();
+        private readonly program: ts.Program,
+        private readonly nodeParser: NodeParser,
+        private readonly typeFormatter: TypeFormatter
+    ) {}
 
-        const sourceFiles = this.program.getSourceFiles();
-        this.prioritizedFiles = [];
-        this.unPrioritizedFiles = [];
-        for (const f of sourceFiles) {
-            if (!f.fileName.includes("/node_modules/")) {
-                this.prioritizedFiles.push(f);
-            } else {
-                this.unPrioritizedFiles.push(f);
-            }
+    public createSchema(fullName: string | undefined): Schema {
+        const rootNodes = this.getRootNodes(fullName);
+        return this.createSchemaFromNodes(rootNodes);
+    }
+
+    public createSchemaFromNodes(rootNodes: ts.Node[]): Schema {
+        const rootTypes = rootNodes
+            .map(rootNode => {
+                return this.nodeParser.createType(rootNode, new Context());
+            })
+            .filter(notUndefined);
+        const rootTypeDefinition = rootTypes.length === 1 ? this.getRootTypeDefinition(rootTypes[0]) : {};
+        const definitions: StringMap<Definition> = {};
+        rootTypes.forEach(rootType => this.appendRootChildDefinitions(rootType, definitions));
+
+        return { $schema: "http://json-schema.org/draft-07/schema#", ...rootTypeDefinition, definitions };
+    }
+
+    private getRootNodes(fullName: string | undefined) {
+        if (fullName && fullName !== "*") {
+            return [this.findNamedNode(fullName)];
+        } else {
+            const rootFileNames = this.program.getRootFileNames();
+            const rootSourceFiles = this.program
+                .getSourceFiles()
+                .filter(sourceFile => rootFileNames.includes(sourceFile.fileName));
+            const rootNodes = new Map<string, ts.Node>();
+            this.appendTypes(rootSourceFiles, this.program.getTypeChecker(), rootNodes);
+            return [...rootNodes.values()];
         }
     }
-
-    public createSchema(fullName: string, useNameForPropKey = false): Schema {
-        const rootNode = this.findRootNode(fullName);
-        const rootType = this.nodeParser.createType(rootNode, new Context());
-        return {
-            definitions: this.getRootChildDefinitions(rootType!, useNameForPropKey),
-            ...this.getRootTypeDefinition(rootType!),
-        };
-    }
-
-    public createSchemaByNodeKind(
-        nodeKinds: ts.SyntaxKind | ts.SyntaxKind[],
-        useNameForPropKey = false
-    ): Schema | null {
+    private findNamedNode(fullName: string): ts.Node {
         const typeChecker = this.program.getTypeChecker();
-        this.setPrioritizedFiles(typeChecker);
-        const nodes = this.getRootNodesByKind(Array.isArray(nodeKinds) ? nodeKinds : [nodeKinds]);
-        if (!nodes || !nodes.length) {
-            return null;
-        }
-        let allSchema: Schema = { definitions: {} };
-        nodes.forEach(node => {
-            const name = this.getFullName(node, typeChecker);
-            // hack read more in TopRefNodeParser file
-            (this.nodeParser as TopRefNodeParser).setFullName(name);
-            const rootType = this.nodeParser.createType(node, new Context());
-            const definitions = this.getRootChildDefinitions(rootType!, useNameForPropKey);
-            allSchema = {
-                ...allSchema,
-                definitions: {
-                    ...allSchema.definitions,
-                    ...definitions,
-                },
-            };
-        });
-        return allSchema;
-    }
+        const allTypes = new Map<string, ts.Node>();
+        const { projectFiles, externalFiles } = this.partitionFiles();
 
-    private findRootNode(fullName: string): ts.Node {
-        const typeChecker = this.program.getTypeChecker();
+        this.appendTypes(projectFiles, typeChecker, allTypes);
 
-        this.setPrioritizedFiles(typeChecker);
-
-        if (this.allTypes.has(fullName)) {
-            return this.allTypes.get(fullName)!;
+        if (allTypes.has(fullName)) {
+            return allTypes.get(fullName)!;
         }
 
-        this.setUnPrioritizedFiles(typeChecker);
+        this.appendTypes(externalFiles, typeChecker, allTypes);
 
-        if (this.allTypes.has(fullName)) {
-            return this.allTypes.get(fullName)!;
+        if (allTypes.has(fullName)) {
+            return allTypes.get(fullName)!;
         }
 
         throw new NoRootTypeError(fullName);
     }
-    private setPrioritizedFiles(typeChecker: ts.TypeChecker) {
-        if (this.prioritizedFiles.length) {
-            for (const sourceFile of this.prioritizedFiles) {
-                this.inspectNode(sourceFile, typeChecker, this.allTypes);
-            }
-            this.prioritizedFiles = [];
-        }
+    private getRootTypeDefinition(rootType: BaseType): Definition {
+        return this.typeFormatter.getDefinition(rootType);
     }
-    private setUnPrioritizedFiles(typeChecker: ts.TypeChecker) {
-        if (this.unPrioritizedFiles.length) {
-            for (const sourceFile of this.unPrioritizedFiles) {
-                this.inspectNode(sourceFile, typeChecker, this.allTypes);
-            }
-            this.unPrioritizedFiles = [];
-        }
-    }
-    private getRootNodesByKind(kinds: ts.SyntaxKind[]): ts.Node[] | null {
-        const nodes = this.nodeInfo
-            .filter(n => n.exported)
-            .reduce((result: ts.Node[], inf) => {
-                if (inf.kind === ts.SyntaxKind.ExportAssignment) {
-                    const assignmentNode = this.nodeInfo
-                        .filter(n => n.name === inf.name && kinds.indexOf(n.kind) > -1)
-                        .map(n => {
-                            return n.node;
-                        });
-                    result = [...result, ...assignmentNode];
-                } else if (inf.kind === ts.SyntaxKind.FunctionDeclaration) {
-                    result.push(inf.node);
+    private appendRootChildDefinitions(rootType: BaseType, childDefinitions: StringMap<Definition>): void {
+        const seen = new Set<string>();
+
+        const children = this.typeFormatter
+            .getChildren(rootType)
+            .filter((child): child is DefinitionType => child instanceof DefinitionType)
+            .filter(child => {
+                if (!seen.has(child.getId())) {
+                    seen.add(child.getId());
+                    return true;
                 }
-                return result;
-            }, []);
-        return nodes;
+                return false;
+            });
+
+        const ids = new Map<string, string>();
+        for (const child of children) {
+            const name = child.getName();
+            const previousId = ids.get(name);
+            if (previousId && child.getId() !== previousId) {
+                throw new Error(`Type "${name}" has multiple definitions.`);
+            }
+            ids.set(name, child.getId());
+        }
+
+        children.reduce((definitions, child) => {
+            const name = child.getName();
+            if (!(name in definitions)) {
+                definitions[name] = this.typeFormatter.getDefinition(child.getType());
+            }
+            return definitions;
+        }, childDefinitions);
+    }
+    private partitionFiles() {
+        const projectFiles = new Array<ts.SourceFile>();
+        const externalFiles = new Array<ts.SourceFile>();
+
+        for (const sourceFile of this.program.getSourceFiles()) {
+            const destination = sourceFile.fileName.includes("/node_modules/") ? externalFiles : projectFiles;
+            destination.push(sourceFile);
+        }
+
+        return { projectFiles, externalFiles };
+    }
+    private appendTypes(
+        sourceFiles: readonly ts.SourceFile[],
+        typeChecker: ts.TypeChecker,
+        types: Map<string, ts.Node>
+    ) {
+        for (const sourceFile of sourceFiles) {
+            this.inspectNode(sourceFile, typeChecker, types);
+        }
     }
     private inspectNode(node: ts.Node, typeChecker: ts.TypeChecker, allTypes: Map<string, ts.Node>): void {
-        if (
-            node.kind === ts.SyntaxKind.InterfaceDeclaration ||
-            node.kind === ts.SyntaxKind.EnumDeclaration ||
-            node.kind === ts.SyntaxKind.TypeAliasDeclaration ||
-            node.kind === ts.SyntaxKind.FunctionDeclaration ||
-            node.kind === ts.SyntaxKind.ExportAssignment
-        ) {
-            if (this.isGenericType(node as ts.TypeAliasDeclaration)) {
-                return;
-            }
-            const name = this.getFullName(node, typeChecker);
-            this.nodeInfo.push({
-                node,
-                name,
-                kind: node.kind,
-                exported: this.isExportType(node) || node.kind === ts.SyntaxKind.ExportAssignment,
-            });
-            allTypes.set(this.getFullName(node, typeChecker), node);
-        } else {
-            ts.forEachChild(node, subNode => this.inspectNode(subNode, typeChecker, allTypes));
+        switch (node.kind) {
+            case ts.SyntaxKind.InterfaceDeclaration:
+            case ts.SyntaxKind.ClassDeclaration:
+            case ts.SyntaxKind.EnumDeclaration:
+            case ts.SyntaxKind.TypeAliasDeclaration:
+                if (!this.isExportType(node) || this.isGenericType(node as ts.TypeAliasDeclaration)) {
+                    return;
+                }
+
+                allTypes.set(this.getFullName(node, typeChecker), node);
+                break;
+            default:
+                ts.forEachChild(node, subnode => this.inspectNode(subnode, typeChecker, allTypes));
+                break;
         }
     }
-
     private isExportType(node: ts.Node): boolean {
         const localSymbol = localSymbolAtNode(node);
         return localSymbol ? "exportSymbol" in localSymbol : false;
@@ -157,23 +149,5 @@ export class SchemaGenerator {
     private getFullName(node: ts.Node, typeChecker: ts.TypeChecker): string {
         const symbol = symbolAtNode(node)!;
         return typeChecker.getFullyQualifiedName(symbol).replace(/".*"\./, "");
-    }
-
-    private getRootTypeDefinition(rootType: BaseType): Definition {
-        return this.typeFormatter.getDefinition(rootType);
-    }
-    private getRootChildDefinitions(rootType: BaseType, useNameForPropKey = false): StringMap<Definition> {
-        return this.typeFormatter
-            .getChildren(rootType)
-            .filter(child => child instanceof DefinitionType)
-            .reduce(
-                (result: StringMap<Definition>, child: DefinitionType) => ({
-                    ...result,
-                    [useNameForPropKey ? child.getName() : child.getId()]: this.typeFormatter.getDefinition(
-                        child.getType()
-                    ),
-                }),
-                {}
-            );
     }
 }

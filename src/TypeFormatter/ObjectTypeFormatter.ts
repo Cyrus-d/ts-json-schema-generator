@@ -81,15 +81,8 @@ export class ObjectTypeFormatter implements SubTypeFormatter {
             return result;
         }, {});
 
-        const anyProps = Object.keys(properties).length;
-        /* to use in my application, disabled in test to pass original tests */
-        if (anyProps && !process.env.__TEST__) {
-            (properties as any).__obj__ = true;
-        }
-
         return {
             type: "object",
-            ...(anyProps ? { properties } : {}),
             ...(Object.keys(properties).length > 0 ? { properties } : {}),
             ...(required.length > 0 ? { required } : {}),
             ...(additionalProperties === true || additionalProperties instanceof AnyType

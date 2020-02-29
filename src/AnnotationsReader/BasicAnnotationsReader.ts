@@ -15,10 +15,6 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         "$comment",
         "contentMediaType",
         "contentEncoding",
-
-        "locale",
-        "name",
-        "label",
     ]);
     private static jsonTags = new Set<string>([
         "minimum",

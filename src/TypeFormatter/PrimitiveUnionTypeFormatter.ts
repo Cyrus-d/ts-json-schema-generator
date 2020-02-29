@@ -10,7 +10,6 @@ import { PrimitiveType } from "../Type/PrimitiveType";
 import { StringType } from "../Type/StringType";
 import { UnionType } from "../Type/UnionType";
 import { uniqueArray } from "../Utils/uniqueArray";
-import { UnknownType } from "../Type/UnknownType";
 
 export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public supportsType(type: UnionType): boolean {
@@ -37,8 +36,6 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
             return "boolean";
         } else if (item instanceof NullType) {
             return "null";
-        } else if (item instanceof UnknownType) {
-            return item.getId() as RawTypeName;
         }
 
         throw new LogicError("Unexpected code branch");

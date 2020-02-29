@@ -15,7 +15,6 @@ import { CallExpressionParser } from "../src/NodeParser/CallExpressionParser";
 import { ConditionalTypeNodeParser } from "../src/NodeParser/ConditionalTypeNodeParser";
 import { EnumNodeParser } from "../src/NodeParser/EnumNodeParser";
 import { ExpressionWithTypeArgumentsNodeParser } from "../src/NodeParser/ExpressionWithTypeArgumentsNodeParser";
-import { FunctionNodeParser } from "../src/NodeParser/FunctionNodeParser";
 import { HiddenNodeParser } from "../src/NodeParser/HiddenTypeNodeParser";
 import { IndexedAccessTypeNodeParser } from "../src/NodeParser/IndexedAccessTypeNodeParser";
 import { InterfaceAndClassNodeParser } from "../src/NodeParser/InterfaceAndClassNodeParser";
@@ -41,12 +40,11 @@ import { TypeOperatorNodeParser } from "../src/NodeParser/TypeOperatorNodeParser
 import { TypeReferenceNodeParser } from "../src/NodeParser/TypeReferenceNodeParser";
 import { UndefinedTypeNodeParser } from "../src/NodeParser/UndefinedTypeNodeParser";
 import { UnionNodeParser } from "../src/NodeParser/UnionNodeParser";
-import { VoidKeywordTypeParser } from "../src/NodeParser/VoidKeywordTypeParser";
 import { UnknownTypeNodeParser } from "../src/NodeParser/UnknownTypeNodeParser";
 import { VoidTypeNodeParser } from "../src/NodeParser/VoidTypeNodeParser";
 import { SubNodeParser } from "../src/SubNodeParser";
 import { TopRefNodeParser } from "../src/TopRefNodeParser";
-import { TypescriptNodeParser } from "../src/NodeParser/TypescriptNodeParser";
+import { FunctionNodeParser } from "./../src/NodeParser/FunctionNodeParser";
 
 export function createParser(program: ts.Program, config: Config): NodeParser {
     const typeChecker = program.getTypeChecker();
@@ -88,6 +86,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new NumberLiteralNodeParser())
         .addNodeParser(new BooleanLiteralNodeParser())
         .addNodeParser(new NullLiteralNodeParser())
+        .addNodeParser(new FunctionNodeParser())
 
         .addNodeParser(new PrefixUnaryExpressionNodeParser(chainNodeParser))
 
@@ -120,14 +119,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         )
         .addNodeParser(withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser(withJsDoc(chainNodeParser))))))
 
-        .addNodeParser(
-            withCircular(withExpose(withJsDoc(new FunctionNodeParser(typeChecker, withJsDoc(chainNodeParser)))))
-        )
-        .addNodeParser(new VoidKeywordTypeParser())
-
-        .addNodeParser(new ArrayNodeParser(chainNodeParser))
-
-        .addNodeParser(new TypescriptNodeParser());
+        .addNodeParser(new ArrayNodeParser(chainNodeParser));
 
     return withTopRef(chainNodeParser);
 }

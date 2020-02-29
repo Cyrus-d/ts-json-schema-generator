@@ -1,5 +1,5 @@
 {
-  "name": "ts-to-json",
+  "name": "ts-json-schema-generator",
   "version": "0.61.1",
   "description": "Generate JSON schema from your Typescript sources",
   "main": "dist/index.js",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cyrus-d/ts-to-json"
+    "url": "https://github.com/vega/ts-json-schema-generator.git"
   },
   "license": "MIT",
   "keywords": [
@@ -59,15 +59,13 @@
     "ts-node": "^8.6.2"
   },
   "scripts": {
-    "prepublish": "npm run build && yarn run build",
-    "preversion": "npm run lint",
     "prepublishOnly": "yarn build",
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "eslint '{src,test,factory}/**/*.ts'",
     "format": "yarn lint --fix",
-    "test": "set __TEST__=1 && jest test/ --verbose",
-    "test:fast": "set FAST_TEST=1 && set __TEST__=1 && jest test/ --verbose",
+    "test": "jest test/ --verbose",
+    "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
     "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
     "run": "ts-node ts-json-schema-generator.ts"
   },
