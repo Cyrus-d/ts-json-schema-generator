@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "name": "ts-to-json",
   "version": "0.61.3",
+=======
+  "name": "ts-json-schema-generator",
+  "version": "0.65.0",
+>>>>>>> e125e3994cf0273da3e41c67cac3fca2ccb3fee4
   "description": "Generate JSON schema from your Typescript sources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +38,10 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@types/animejs": "^3.1.0",
+=======
+>>>>>>> e125e3994cf0273da3e41c67cac3fca2ccb3fee4
     "@types/json-schema": "^7.0.4",
     "commander": "~4.1.1",
     "glob": "~7.1.6",
@@ -54,22 +62,32 @@
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
+<<<<<<< HEAD
     "jest-mock-console": "^1.0.0",
+=======
+>>>>>>> e125e3994cf0273da3e41c67cac3fca2ccb3fee4
     "prettier": "^1.19.1",
     "source-map-support": "~0.5.16",
     "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2"
   },
   "scripts": {
+<<<<<<< HEAD
     "prepublish": "npm run build && yarn run build",
     "preversion": "npm run lint",
+=======
+>>>>>>> e125e3994cf0273da3e41c67cac3fca2ccb3fee4
     "prepublishOnly": "yarn build",
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "eslint '{src,test,factory}/**/*.ts'",
     "format": "yarn lint --fix",
     "test": "jest test/ --verbose",
+<<<<<<< HEAD
     "test:fast": "set FAST_TEST=1 && jest test/ --verbose",
+=======
+    "test:fast": "FAST_TEST=1 jest test/ --verbose",
+>>>>>>> e125e3994cf0273da3e41c67cac3fca2ccb3fee4
     "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
     "run": "ts-node ts-json-schema-generator.ts"
   },
