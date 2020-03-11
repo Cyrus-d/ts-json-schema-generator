@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/MyType",
+    "definitions": {
+        "MyType": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/definitions/interface-572149719-68-159-572149719-0-160"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalProperties": false
+        },
+        "interface-572149719-68-159-572149719-0-160": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/definitions/interface-572149719-68-159-572149719-0-160"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

@@ -20,6 +20,7 @@ export class CircularReferenceNodeParser implements SubNodeParser {
         }
 
         const reference = new ReferenceType();
+        reference.setId("circularRef-" + key);
         this.circular.set(key, reference);
         const type = this.childNodeParser.createType(node, context, reference);
         if (type) {
