@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/MyType",
+    "definitions": {
+        "MyType": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "$ref": "#/definitions/HelperA"
+                },
+                "d": {
+                    "$ref": "#/definitions/HelperA"
+                }
+            },
+            "required": [
+                "a",
+                "d"
+            ],
+            "additionalProperties": false
+        },
+        "HelperA": {
+            "type": "object",
+            "properties": {
+                "b": {
+                    "type": "object",
+                    "properties": {
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "c": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "b",
+                "c"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

@@ -107,7 +107,7 @@ describe("createSchema", () => {
         assertSchema("excludeProperties", {
             type: "MyType",
             handleUnknownTypes: true,
-            excludeProperties: ["c", "a.b.c", "with-dash", "a.b.d.e"],
+            excludeProperties: ["d"],
             expose: "export",
         })
     );
