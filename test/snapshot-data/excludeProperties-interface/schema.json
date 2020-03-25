@@ -1,0 +1,326 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "MyType1": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "b"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a"
+            ],
+            "additionalProperties": false
+        },
+        "MyType2": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "string"
+                },
+                "b": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b"
+            ],
+            "additionalProperties": false
+        },
+        "MyType3": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "b"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a"
+            ],
+            "additionalProperties": false
+        },
+        "MyType4": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "b"
+                    ],
+                    "additionalProperties": false
+                },
+                "b": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b"
+            ],
+            "additionalProperties": false
+        },
+        "MyType5": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "a": {
+                    "type": "string",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "b"
+                    ],
+                    "additionalProperties": false
+                },
+                "b": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b"
+            ]
+        },
+        "MyType6": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "$ref": "#/definitions/MyType1"
+                }
+            },
+            "required": [
+                "a"
+            ],
+            "additionalProperties": false
+        },
+        "MyType7": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "d": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "d"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "e": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "e",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "b": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a",
+                "b"
+            ],
+            "additionalProperties": false
+        },
+        "MyType8": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "e": {
+                                    "$ref": "#/definitions/MyType8"
+                                }
+                            },
+                            "required": [
+                                "e"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "f": {
+                            "$ref": "#/definitions/MyType8"
+                        },
+                        "g": {
+                            "type": "string"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "f",
+                        "g",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "b": {
+                    "$ref": "#/definitions/MyType8"
+                },
+                "d": {
+                    "type": "object",
+                    "properties": {
+                        "e": {
+                            "$ref": "#/definitions/MyType8"
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "e",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a",
+                "b",
+                "d"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject9": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "additionalProperties": false
+                        },
+                        "c": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                },
+                "value2": {
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "c": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "c"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "a",
+                "value2"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject10": {
+            "type": "object",
+            "properties": {
+                "without": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "without"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject11": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "number"
+                },
+                "b": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "a",
+                "b"
+            ],
+            "additionalProperties": false
+        },
+        "MyObject12": {
+            "type": "object",
+            "properties": {
+                "a": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "a"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

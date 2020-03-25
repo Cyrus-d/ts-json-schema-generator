@@ -2,9 +2,20 @@ export * from './allOfDefinition';
 export * from './deepMerge';
 export * from './derefType';
 export * from './formatError';
+<<<<<<< HEAD
 export * from './hasLimitOptions';
 export * from './intersectionOfArrays';
 export * from './isAssignableTo';
+=======
+export * from './getPropName';
+export * from './getPropNode';
+export * from './getPropsFromContextRecursively';
+export * from './getPropsFromTypeLiteralRecursively';
+export * from './getPropsRecursively';
+export * from './intersectionOfArrays';
+export * from './isAssignableTo';
+export * from './isExcludedProp';
+>>>>>>> parent of 9ef5067... excludeProperties-dirty
 export * from './isHidden';
 export * from './isInForceParseTypes';
 export * from './isInSkipParseFiles';

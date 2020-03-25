@@ -47,7 +47,11 @@ export class TypeReferenceNodeParser implements SubNodeParser {
     }
 
     private createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
+<<<<<<< HEAD
         const subContext = new Context(node);
+=======
+        const subContext = new Context(node, parentContext);
+>>>>>>> parent of 9ef5067... excludeProperties-dirty
         if (node.typeArguments && node.typeArguments.length) {
             for (const typeArg of node.typeArguments) {
                 const type = this.childNodeParser.createType(typeArg, parentContext);

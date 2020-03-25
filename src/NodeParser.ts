@@ -10,6 +10,10 @@ export class Context {
     private parameters: string[] = [];
     private reference?: ts.Node;
     private defaultArgument = new Map<string, BaseType | undefined>();
+<<<<<<< HEAD
+=======
+    private parentContext?: Context;
+>>>>>>> parent of 9ef5067... excludeProperties-dirty
 
     public constructor(reference?: ts.Node) {
         this.reference = reference;
@@ -59,6 +63,13 @@ export class Context {
     public getReference(): ts.Node | undefined {
         return this.reference;
     }
+<<<<<<< HEAD
+=======
+
+    public getParentContext() {
+        return this.parentContext;
+    }
+>>>>>>> parent of 9ef5067... excludeProperties-dirty
 }
 
 export interface NodeParser {
