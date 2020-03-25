@@ -23,14 +23,6 @@
             "properties": {
                 "b": {
                     "type": "object",
-                    "properties": {
-                        "c": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "c"
-                    ],
                     "additionalProperties": false
                 },
                 "c": {

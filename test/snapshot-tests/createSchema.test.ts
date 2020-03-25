@@ -108,7 +108,8 @@ describe("createSchema", () => {
             type: "MyType",
             handleUnknownTypes: true,
             excludeProperties: ["d"],
-            expose: "export",
+            expose: "all",
+            maxDepth: 1,
         })
     );
     // it(

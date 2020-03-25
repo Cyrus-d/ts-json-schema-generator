@@ -6,7 +6,7 @@ import { Schema } from "./Schema/Schema";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { TypeFormatter } from "./TypeFormatter";
-import { StringMap } from "./Utils/StringMap";
+import { StringMap } from "./Utils";
 import { localSymbolAtNode, symbolAtNode } from "./Utils/symbolAtNode";
 import { notUndefined } from "./Utils/notUndefined";
 import { TopRefNodeParser } from "./TopRefNodeParser";
@@ -100,7 +100,7 @@ export class SchemaGenerator {
         }
 
         children.reduce((definitions, child) => {
-            const newChild = this.applyMaxDepth(child);
+            const newChild = this.applyLimits(child);
             const name = newChild!.getName();
             if (!(name in definitions)) {
                 definitions[name] = this.typeFormatter.getDefinition(newChild!.getType());
@@ -162,9 +162,15 @@ export class SchemaGenerator {
         My Implementations
     */
 
-    private applyMaxDepth(node: DefinitionType, dept = 0) {
-        if (!this.config || this.config.maxDepth === undefined) return node;
+    private applyLimits(node: DefinitionType) {
+        let newSchema: DefinitionType = node;
+        if (this.config && this.config.maxDepth) {
+            newSchema = this.applyMaxDepth(node, this.config.maxDepth);
+        }
+        return newSchema;
+    }
 
+    private applyMaxDepth(node: DefinitionType, maxDepth: number, dept = 0) {
         const nodeType = node.getType();
 
         let props;
@@ -180,11 +186,11 @@ export class SchemaGenerator {
 
         (node as any).type.properties = [];
 
-        if (dept > this.config.maxDepth - 1) {
+        if (dept > maxDepth - 1) {
             return node;
         } else {
             props.forEach((prop: any) => {
-                const newNode = this.applyMaxDepth(prop, dept + 1);
+                const newNode = this.applyMaxDepth(prop, maxDepth, dept + 1);
                 if (newNode) {
                     (node as any).type.properties.push(newNode);
                 }
