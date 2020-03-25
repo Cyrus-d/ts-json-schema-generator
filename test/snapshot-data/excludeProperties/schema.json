@@ -6,32 +6,37 @@
             "type": "object",
             "properties": {
                 "a": {
-                    "$ref": "#/definitions/HelperA"
+                    "type": "object",
+                    "properties": {
+                        "b": {
+                            "type": "object",
+                            "properties": {
+                                "c": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "c"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "c": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "b",
+                        "c"
+                    ],
+                    "additionalProperties": false
                 },
                 "d": {
-                    "$ref": "#/definitions/HelperA"
+                    "$ref": "#/definitions/MyType"
                 }
             },
             "required": [
                 "a",
                 "d"
-            ],
-            "additionalProperties": false
-        },
-        "HelperA": {
-            "type": "object",
-            "properties": {
-                "b": {
-                    "type": "object",
-                    "additionalProperties": false
-                },
-                "c": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "b",
-                "c"
             ],
             "additionalProperties": false
         }

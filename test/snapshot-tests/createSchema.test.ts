@@ -6,7 +6,7 @@ import { createParser } from "../../factory/parser";
 import { createProgram } from "../../factory/program";
 import { Config } from "../../src/Config";
 import { SchemaGenerator } from "../../src/SchemaGenerator";
-import { getRelativeDirectories } from "../utils";
+// import { getRelativeDirectories } from "../utils";
 
 const basePath = "test/snapshot-data";
 
@@ -108,8 +108,8 @@ describe("createSchema", () => {
             type: "MyType",
             handleUnknownTypes: true,
             excludeProperties: ["d"],
-            expose: "all",
-            maxDepth: 1,
+            expose: "none",
+            // maxDepth: 1,
         })
     );
     // it(

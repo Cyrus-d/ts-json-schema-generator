@@ -1,6 +1,6 @@
 export interface MyType {
     a: HelperA;
-    d: HelperA;
+    d: MyType;
 }
 export interface HelperA {
     b: {

@@ -4,13 +4,14 @@ import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { DefinitionType } from "./Type/DefinitionType";
 import { ReferenceType } from "./Type/ReferenceType";
-import { symbolAtNode } from "./Utils/symbolAtNode";
+import { symbolAtNode, getNodeName } from "./Utils";
+import { Config } from "./Config";
 
 export class ExposeNodeParser implements SubNodeParser {
     public constructor(
         private typeChecker: ts.TypeChecker,
         private subNodeParser: SubNodeParser,
-        private expose: "all" | "none" | "export"
+        private config: Config
     ) {}
 
     public supportsNode(node: ts.Node): boolean {
@@ -32,10 +33,13 @@ export class ExposeNodeParser implements SubNodeParser {
     }
 
     private isExportNode(node: ts.Node): boolean {
-        if (this.expose === "all") {
+        if (this.config.expose === "all") {
             return node.kind !== ts.SyntaxKind.TypeLiteral;
-        } else if (this.expose === "none") {
-            return false;
+        } else if (this.config.expose === "none") {
+            const nodeName = getNodeName(node);
+            if (!this.config.type || nodeName !== this.config.type) {
+                return false;
+            }
         }
 
         const localSymbol: ts.Symbol = (node as any).localSymbol;

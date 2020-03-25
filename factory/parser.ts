@@ -55,7 +55,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
     const chainNodeParser = new ChainNodeParser(typeChecker, []);
 
     function withExpose(nodeParser: SubNodeParser): SubNodeParser {
-        return new ExposeNodeParser(typeChecker, nodeParser, config.expose);
+        return new ExposeNodeParser(typeChecker, nodeParser, config);
     }
     function withTopRef(nodeParser: NodeParser): NodeParser {
         return new TopRefNodeParser(chainNodeParser, config.type!, config.topRef);
