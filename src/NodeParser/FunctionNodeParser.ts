@@ -1,4 +1,5 @@
 import * as ts from "typescript";
+<<<<<<< HEAD
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
@@ -65,5 +66,21 @@ export class FunctionNodeParser implements SubNodeParser {
         const argumentIds = context.getArguments().map(arg => arg!.getId());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
+=======
+import { SubNodeParser } from "../SubNodeParser";
+import { BaseType } from "../Type/BaseType";
+import { FunctionType } from "./../Type/FunctionType";
+
+/**
+ * A function node parser that creates a function type so that mapped types can
+ * use functions as values. There is no formatter for function types.
+ */
+export class FunctionNodeParser implements SubNodeParser {
+    public supportsNode(node: ts.FunctionTypeNode): boolean {
+        return node.kind === ts.SyntaxKind.FunctionType;
+    }
+    public createType(): BaseType {
+        return new FunctionType();
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 }

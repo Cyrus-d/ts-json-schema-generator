@@ -9,15 +9,20 @@ import { TypeFormatter } from "./TypeFormatter";
 import { StringMap } from "./Utils/StringMap";
 import { localSymbolAtNode, symbolAtNode } from "./Utils/symbolAtNode";
 import { notUndefined } from "./Utils/notUndefined";
+<<<<<<< HEAD
 import { TopRefNodeParser } from "./TopRefNodeParser";
 // import { ObjectType } from "./Type/ObjectType";
 // import { FunctionType } from "./Type/FunctionType";
 import { Config } from "./Config";
+=======
+import { removeUnreachable } from "./Utils/removeUnreachable";
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
 export class SchemaGenerator {
     public constructor(
         private readonly program: ts.Program,
         private readonly nodeParser: NodeParser,
+<<<<<<< HEAD
         private readonly typeFormatter: TypeFormatter,
         private readonly config?: Config
     ) {}
@@ -38,6 +43,33 @@ export class SchemaGenerator {
         rootTypes.forEach(rootType => this.appendRootChildDefinitions(rootType, definitions));
         delete definitions["*"];
         return { $schema: "http://json-schema.org/draft-07/schema#", ...rootTypeDefinition, definitions };
+=======
+        private readonly typeFormatter: TypeFormatter
+    ) {}
+
+    public createSchema(fullName: string | undefined): Schema {
+        const rootNodes = this.getRootNodes(fullName);
+        return this.createSchemaFromNodes(rootNodes);
+    }
+
+    public createSchemaFromNodes(rootNodes: ts.Node[]): Schema {
+        const rootTypes = rootNodes
+            .map((rootNode) => {
+                return this.nodeParser.createType(rootNode, new Context());
+            })
+            .filter(notUndefined);
+        const rootTypeDefinition = rootTypes.length === 1 ? this.getRootTypeDefinition(rootTypes[0]) : undefined;
+        const definitions: StringMap<Definition> = {};
+        rootTypes.forEach((rootType) => this.appendRootChildDefinitions(rootType, definitions));
+
+        const reachableDefinitions = removeUnreachable(rootTypeDefinition, definitions);
+
+        return {
+            $schema: "http://json-schema.org/draft-07/schema#",
+            ...(rootTypeDefinition ?? {}),
+            definitions: reachableDefinitions,
+        };
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 
     private getRootNodes(fullName: string | undefined) {
@@ -47,7 +79,11 @@ export class SchemaGenerator {
             const rootFileNames = this.program.getRootFileNames();
             const rootSourceFiles = this.program
                 .getSourceFiles()
+<<<<<<< HEAD
                 .filter(sourceFile => rootFileNames.includes(sourceFile.fileName));
+=======
+                .filter((sourceFile) => rootFileNames.includes(sourceFile.fileName));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
             const rootNodes = new Map<string, ts.Node>();
             this.appendTypes(rootSourceFiles, this.program.getTypeChecker(), rootNodes);
             return [...rootNodes.values()];
@@ -81,7 +117,11 @@ export class SchemaGenerator {
         const children = this.typeFormatter
             .getChildren(rootType)
             .filter((child): child is DefinitionType => child instanceof DefinitionType)
+<<<<<<< HEAD
             .filter(child => {
+=======
+            .filter((child) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 if (!seen.has(child.getId())) {
                     seen.add(child.getId());
                     return true;
@@ -133,6 +173,7 @@ export class SchemaGenerator {
             case ts.SyntaxKind.ClassDeclaration:
             case ts.SyntaxKind.EnumDeclaration:
             case ts.SyntaxKind.TypeAliasDeclaration:
+<<<<<<< HEAD
             case ts.SyntaxKind.FunctionDeclaration:
             case ts.SyntaxKind.ExportAssignment:
                 if (this.isGenericType(node as ts.TypeAliasDeclaration)) {
@@ -142,6 +183,16 @@ export class SchemaGenerator {
                 break;
             default:
                 ts.forEachChild(node, subnode => this.inspectNode(subnode, typeChecker, allTypes));
+=======
+                if (!this.isExportType(node) || this.isGenericType(node as ts.TypeAliasDeclaration)) {
+                    return;
+                }
+
+                allTypes.set(this.getFullName(node, typeChecker), node);
+                break;
+            default:
+                ts.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 break;
         }
     }
@@ -156,6 +207,7 @@ export class SchemaGenerator {
         const symbol = symbolAtNode(node)!;
         return typeChecker.getFullyQualifiedName(symbol).replace(/".*"\./, "");
     }
+<<<<<<< HEAD
 
     /*
         My Implementations
@@ -209,4 +261,6 @@ export class SchemaGenerator {
                 {}
             );
     }
+=======
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 }

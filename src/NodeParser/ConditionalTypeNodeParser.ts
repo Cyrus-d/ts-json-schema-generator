@@ -25,8 +25,13 @@ export class ConditionalTypeNodeParser implements SubNodeParser {
         }
 
         // Narrow down check type for both condition branches
+<<<<<<< HEAD
         const trueCheckType = narrowType(checkType, type => isAssignableTo(extendsType, type));
         const falseCheckType = narrowType(checkType, type => !isAssignableTo(extendsType, type));
+=======
+        const trueCheckType = narrowType(checkType, (type) => isAssignableTo(extendsType, type));
+        const falseCheckType = narrowType(checkType, (type) => !isAssignableTo(extendsType, type));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
         // Follow the relevant branches and return the results from them
         const results: BaseType[] = [];
@@ -82,14 +87,22 @@ export class ConditionalTypeNodeParser implements SubNodeParser {
         narrowedCheckType: BaseType,
         parentContext: Context
     ): Context {
+<<<<<<< HEAD
         const subContext = new Context(node, parentContext);
+=======
+        const subContext = new Context(node);
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
         // Set new narrowed type for check type parameter
         subContext.pushParameter(checkTypeParameterName);
         subContext.pushArgument(narrowedCheckType);
 
         // Copy all other type parameters from parent context
+<<<<<<< HEAD
         parentContext.getParameters().forEach(parentParameter => {
+=======
+        parentContext.getParameters().forEach((parentParameter) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
             if (parentParameter !== checkTypeParameterName) {
                 subContext.pushParameter(parentParameter);
                 subContext.pushArgument(parentContext.getArgument(parentParameter));

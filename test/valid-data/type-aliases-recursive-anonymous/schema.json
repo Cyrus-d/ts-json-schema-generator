@@ -1,5 +1,9 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
+<<<<<<< HEAD
+=======
+    "$ref": "#/definitions/MyAlias",
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     "definitions": {
         "MyAlias": {
             "type": "object",
@@ -8,7 +12,11 @@
                     "$ref": "#/definitions/MyAlias"
                 },
                 "self": {
+<<<<<<< HEAD
                     "$ref": "#/definitions/interface-1975771820-0-62-1975771820-0-96"
+=======
+                    "$ref": "#/definitions/interface-425636228-0-62-425636228-0-96"
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 }
             },
             "required": [
@@ -17,14 +25,22 @@
             ],
             "additionalProperties": false
         },
+<<<<<<< HEAD
         "interface-1975771820-0-62-1975771820-0-96": {
+=======
+        "interface-425636228-0-62-425636228-0-96": {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
             "type": "object",
             "properties": {
                 "alias": {
                     "$ref": "#/definitions/MyAlias"
                 },
                 "self": {
+<<<<<<< HEAD
                     "$ref": "#/definitions/interface-1975771820-0-62-1975771820-0-96"
+=======
+                    "$ref": "#/definitions/interface-425636228-0-62-425636228-0-96"
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 }
             },
             "required": [
@@ -33,6 +49,10 @@
             ],
             "additionalProperties": false
         }
+<<<<<<< HEAD
     },
     "$ref": "#/definitions/MyAlias"
+=======
+    }
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 }

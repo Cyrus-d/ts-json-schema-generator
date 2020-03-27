@@ -9,7 +9,11 @@ export class EnumType extends BaseType {
 
     public constructor(private id: string, private values: readonly EnumValue[]) {
         super();
+<<<<<<< HEAD
         this.types = values.map(value => (value == null ? new NullType() : new LiteralType(value)));
+=======
+        this.types = values.map((value) => (value == null ? new NullType() : new LiteralType(value)));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 
     public getId(): string {

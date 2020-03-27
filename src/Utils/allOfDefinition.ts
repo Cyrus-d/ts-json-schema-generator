@@ -1,14 +1,16 @@
 import { isArray } from "util";
 import { Definition } from "../Schema/Definition";
 import { RawTypeName } from "../Schema/RawType";
+<<<<<<< HEAD
 import { AliasType } from "../Type/AliasType";
 import { AnnotatedType } from "../Type/AnnotatedType";
+=======
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 import { BaseType } from "../Type/BaseType";
-import { DefinitionType } from "../Type/DefinitionType";
-import { ReferenceType } from "../Type/ReferenceType";
 import { TypeFormatter } from "../TypeFormatter";
 import { uniqueArray } from "./uniqueArray";
 import { deepMerge } from "./deepMerge";
+<<<<<<< HEAD
 
 function getNonRefType(type: BaseType): BaseType {
     if (
@@ -21,15 +23,22 @@ function getNonRefType(type: BaseType): BaseType {
     }
     return type;
 }
+=======
+import { derefType } from "./derefType";
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
 // TODO: Can we do this at parse time? See heritage clause in interfaces.
 // TODO: We really only need this if the children use additionalProperties: false.
 export function getAllOfDefinitionReducer(childTypeFormatter: TypeFormatter, concatArrays: boolean) {
     // combine object instead of using allOf because allOf does not work well with additional properties
     return (definition: Definition, baseType: BaseType) => {
-        const other = childTypeFormatter.getDefinition(getNonRefType(baseType));
+        const other = childTypeFormatter.getDefinition(derefType(baseType)!);
 
+<<<<<<< HEAD
         definition.properties = deepMerge(other.properties || {}, definition.properties || {}, concatArrays);
+=======
+        definition.properties = deepMerge(other.properties || {}, definition.properties || {});
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
         function additionalPropsDefinition(props?: boolean | Definition): props is Definition {
             return props !== undefined && props !== true;

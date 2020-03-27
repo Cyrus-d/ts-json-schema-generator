@@ -1,5 +1,6 @@
 import { BaseType } from "./BaseType";
 
+<<<<<<< HEAD
 export class FunctionParameter {
     public constructor(private name: string, private type: BaseType, private required: boolean) {}
 
@@ -39,5 +40,10 @@ export class FunctionType extends BaseType {
     }
     public getAdditionalParameters(): BaseType | boolean {
         return this.additionalParameters;
+=======
+export class FunctionType extends BaseType {
+    public getId() {
+        return "function";
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 }

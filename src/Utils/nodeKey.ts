@@ -34,14 +34,25 @@ export function hash(a: any): string | number {
 export function getKey(node: Node, context: Context) {
     const ids: (number | string)[] = [];
     while (node) {
+<<<<<<< HEAD
         const file = node.getSourceFile().fileName.substr(process.cwd().length + 1);
+=======
+        const file = node
+            .getSourceFile()
+            .fileName.substr(process.cwd().length + 1)
+            .replace(/\//g, "_");
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
         ids.push(hash(file), node.pos, node.end);
 
         node = node.parent;
     }
     const id = ids.join("-");
 
+<<<<<<< HEAD
     const argumentIds = context.getArguments().map(arg => arg?.getId());
+=======
+    const argumentIds = context.getArguments().map((arg) => arg?.getId());
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
     return argumentIds.length ? `${id}<${argumentIds.join(",")}>` : id;
 }

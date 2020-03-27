@@ -10,7 +10,10 @@ import { PrimitiveType } from "../Type/PrimitiveType";
 import { StringType } from "../Type/StringType";
 import { UnionType } from "../Type/UnionType";
 import { uniqueArray } from "../Utils/uniqueArray";
+<<<<<<< HEAD
 import { StaticType } from "../Type/StaticType";
+=======
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
 export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     public supportsType(type: UnionType): boolean {
@@ -18,7 +21,11 @@ export class PrimitiveUnionTypeFormatter implements SubTypeFormatter {
     }
     public getDefinition(type: UnionType): Definition {
         return {
+<<<<<<< HEAD
             type: uniqueArray(type.getTypes().map(item => this.getPrimitiveType(item))),
+=======
+            type: uniqueArray(type.getTypes().map((item) => this.getPrimitiveType(item))),
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
         };
     }
     public getChildren(type: UnionType): BaseType[] {

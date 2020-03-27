@@ -26,7 +26,11 @@ import { BooleanType } from "../Type/BooleanType";
  */
 function combineIntersectingTypes(intersection: IntersectionType): BaseType[] {
     const objectTypes: ObjectType[] = [];
+<<<<<<< HEAD
     const combined = intersection.getTypes().filter(type => {
+=======
+    const combined = intersection.getTypes().filter((type) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
         if (type instanceof ObjectType) {
             objectTypes.push(type);
         } else {
@@ -129,13 +133,21 @@ export function isAssignableTo(
 
     // Union and enum type is assignable to target when all types in the union/enum are assignable to it
     if (source instanceof UnionType || source instanceof EnumType) {
+<<<<<<< HEAD
         return source.getTypes().every(type => isAssignableTo(target, type, insideTypes));
+=======
+        return source.getTypes().every((type) => isAssignableTo(target, type, insideTypes));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 
     // When source is an intersection type then it can be assigned to target if any of the sub types matches. Object
     // types within the intersection must be combined first
     if (source instanceof IntersectionType) {
+<<<<<<< HEAD
         return combineIntersectingTypes(source).some(type => isAssignableTo(target, type, insideTypes));
+=======
+        return combineIntersectingTypes(source).some((type) => isAssignableTo(target, type, insideTypes));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 
     // For arrays check if item types are assignable
@@ -144,7 +156,11 @@ export function isAssignableTo(
         if (source instanceof ArrayType) {
             return isAssignableTo(targetItemType, source.getItem(), insideTypes);
         } else if (source instanceof TupleType) {
+<<<<<<< HEAD
             return source.getTypes().every(type => isAssignableTo(targetItemType, type, insideTypes));
+=======
+            return source.getTypes().every((type) => isAssignableTo(targetItemType, type, insideTypes));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
         } else {
             return false;
         }
@@ -152,13 +168,21 @@ export function isAssignableTo(
 
     // When target is a union or enum type then check if source type can be assigned to any variant
     if (target instanceof UnionType || target instanceof EnumType) {
+<<<<<<< HEAD
         return target.getTypes().some(type => isAssignableTo(type, source, insideTypes));
+=======
+        return target.getTypes().some((type) => isAssignableTo(type, source, insideTypes));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 
     // When target is an intersection type then source can be assigned to it if it matches all sub types. Object
     // types within the intersection must be combined first
     if (target instanceof IntersectionType) {
+<<<<<<< HEAD
         return combineIntersectingTypes(target).every(type => isAssignableTo(type, source, insideTypes));
+=======
+        return combineIntersectingTypes(target).every((type) => isAssignableTo(type, source, insideTypes));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 
     // Check literal types
@@ -175,6 +199,7 @@ export function isAssignableTo(
             const sourceMembers = getObjectProperties(source);
 
             // Check if target has properties in common with source
+<<<<<<< HEAD
             const inCommon = targetMembers.some(targetMember =>
                 sourceMembers.some(sourceMember => targetMember.getName() === sourceMember.getName())
             );
@@ -187,6 +212,20 @@ export function isAssignableTo(
                 }) &&
                 sourceMembers.every(sourceMember => {
                     const targetMember = targetMembers.find(member => member.getName() === sourceMember.getName());
+=======
+            const inCommon = targetMembers.some((targetMember) =>
+                sourceMembers.some((sourceMember) => targetMember.getName() === sourceMember.getName())
+            );
+
+            return (
+                targetMembers.every((targetMember) => {
+                    // Make sure that every required property in target type is present
+                    const sourceMember = sourceMembers.find((member) => targetMember.getName() === member.getName());
+                    return sourceMember == null ? inCommon && !targetMember.isRequired() : true;
+                }) &&
+                sourceMembers.every((sourceMember) => {
+                    const targetMember = targetMembers.find((member) => member.getName() === sourceMember.getName());
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                     if (targetMember == null) {
                         return true;
                     }

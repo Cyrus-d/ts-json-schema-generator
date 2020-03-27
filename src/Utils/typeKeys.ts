@@ -31,7 +31,11 @@ export function getTypeKeys(type: BaseType | undefined): LiteralType[] {
         return type.getTypes().map((it, idx) => new LiteralType(idx));
     }
     if (type instanceof ObjectType) {
+<<<<<<< HEAD
         const objectProperties = type.getProperties().map(it => new LiteralType(it.getName()));
+=======
+        const objectProperties = type.getProperties().map((it) => new LiteralType(it.getName()));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
         return uniqueLiterals(
             type
                 .getBaseTypes()
@@ -67,7 +71,11 @@ export function getTypeByKey(type: BaseType | undefined, index: LiteralType | St
     }
     if (type instanceof ObjectType) {
         if (index instanceof LiteralType) {
+<<<<<<< HEAD
             const property = type.getProperties().find(it => it.getName() === index.getValue());
+=======
+            const property = type.getProperties().find((it) => it.getName() === index.getValue());
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
             if (property) {
                 const propertyType = property.getType();
                 if (propertyType === undefined) {
@@ -76,7 +84,11 @@ export function getTypeByKey(type: BaseType | undefined, index: LiteralType | St
                 let newPropType = derefAnnotatedType(propertyType);
                 if (!property.isRequired()) {
                     if (newPropType instanceof UnionType) {
+<<<<<<< HEAD
                         if (!newPropType.getTypes().some(subType => subType instanceof UndefinedType)) {
+=======
+                        if (!newPropType.getTypes().some((subType) => subType instanceof UndefinedType)) {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                             newPropType = new UnionType([...newPropType.getTypes(), new UndefinedType()]);
                         }
                     } else {

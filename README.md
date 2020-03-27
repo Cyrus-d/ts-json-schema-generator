@@ -37,6 +37,11 @@ const config = {
     tsconfig: "path/to/tsconfig.json",
     type: "*", // Or <type-name> if you want to generate schema for that one type only
     expose: "export",
+<<<<<<< HEAD
+=======
+    jsDoc: "extended",
+    topRef: true
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 };
 
 const output_path = "path/to/output/file";

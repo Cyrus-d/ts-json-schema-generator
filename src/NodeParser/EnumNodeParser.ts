@@ -4,8 +4,12 @@ import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { EnumType, EnumValue } from "../Type/EnumType";
 import { isHidden } from "../Utils/isHidden";
+<<<<<<< HEAD
 import { getKey, isExcludedProp } from "../Utils";
 import { Config } from "../Config";
+=======
+import { getKey } from "../Utils/nodeKey";
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
 function isMemberHidden(member: ts.EnumMember) {
     if (!("symbol" in member)) {
@@ -17,7 +21,11 @@ function isMemberHidden(member: ts.EnumMember) {
 }
 
 export class EnumNodeParser implements SubNodeParser {
+<<<<<<< HEAD
     public constructor(private typeChecker: ts.TypeChecker, private config: Config) {}
+=======
+    public constructor(private typeChecker: ts.TypeChecker) {}
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
     public supportsNode(node: ts.EnumDeclaration | ts.EnumMember): boolean {
         return node.kind === ts.SyntaxKind.EnumDeclaration || node.kind === ts.SyntaxKind.EnumMember;

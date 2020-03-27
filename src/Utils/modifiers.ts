@@ -12,7 +12,11 @@ export function hasModifier(node: ts.Node, modifier: ts.SyntaxKind): boolean {
     if (nodeModifiers == null) {
         return false;
     } else {
+<<<<<<< HEAD
         return nodeModifiers.some(nodeModifier => nodeModifier.kind === modifier);
+=======
+        return nodeModifiers.some((nodeModifier) => nodeModifier.kind === modifier);
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 }
 

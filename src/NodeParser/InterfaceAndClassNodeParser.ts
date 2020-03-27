@@ -9,6 +9,7 @@ import { isNodeHidden } from "../Utils/isHidden";
 import { isPublic, isStatic } from "../Utils/modifiers";
 import { getKey } from "../Utils/nodeKey";
 import { notUndefined } from "../Utils/notUndefined";
+<<<<<<< HEAD
 import { isExcludedProp, extendKey } from "../Utils";
 import { Config } from "../Config";
 
@@ -18,6 +19,11 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         private childNodeParser: NodeParser,
         private config: Config
     ) {}
+=======
+
+export class InterfaceAndClassNodeParser implements SubNodeParser {
+    public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
     public supportsNode(node: ts.InterfaceDeclaration | ts.ClassDeclaration): boolean {
         return node.kind === ts.SyntaxKind.InterfaceDeclaration || node.kind === ts.SyntaxKind.ClassDeclaration;
@@ -29,7 +35,11 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         reference?: ReferenceType
     ): BaseType | undefined {
         if (node.typeParameters?.length) {
+<<<<<<< HEAD
             node.typeParameters.forEach(typeParam => {
+=======
+            node.typeParameters.forEach((typeParam) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 const nameSymbol = this.typeChecker.getSymbolAtLocation(typeParam.name)!;
                 context.pushParameter(nameSymbol.name);
 
@@ -102,7 +112,11 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
             (result: BaseType[], baseType) => [
                 ...result,
                 ...baseType.types
+<<<<<<< HEAD
                     .map(expression => this.childNodeParser.createType(expression, context))
+=======
+                    .map((expression) => this.childNodeParser.createType(expression, context))
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                     .filter(notUndefined),
             ],
             []
@@ -116,10 +130,16 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
         let hasRequiredNever = false;
 
         const properties = (node.members as ts.NodeArray<ts.TypeElement | ts.ClassElement>)
+<<<<<<< HEAD
             .filter(member => !isExcludedProp(member, context, this.config))
             .reduce((members, member) => {
                 if (ts.isConstructorDeclaration(member)) {
                     const params = member.parameters.filter(param =>
+=======
+            .reduce((members, member) => {
+                if (ts.isConstructorDeclaration(member)) {
+                    const params = member.parameters.filter((param) =>
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                         ts.isParameterPropertyDeclaration(param, param.parent)
                     ) as ts.ParameterPropertyDeclaration[];
                     members.push(...params);
@@ -128,16 +148,26 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
                 }
                 return members;
             }, [] as (ts.PropertyDeclaration | ts.PropertySignature | ts.ParameterPropertyDeclaration)[])
+<<<<<<< HEAD
             .filter(member => isPublic(member) && !isStatic(member) && member.type && !isNodeHidden(member))
             .map(
                 member =>
+=======
+            .filter((member) => isPublic(member) && !isStatic(member) && member.type && !isNodeHidden(member))
+            .map(
+                (member) =>
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                     new ObjectProperty(
                         member.name.getText(),
                         this.childNodeParser.createType(member.type!, context),
                         !member.questionToken
                     )
             )
+<<<<<<< HEAD
             .filter(prop => {
+=======
+            .filter((prop) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 if (prop.isRequired() && prop.getType() === undefined) {
                     hasRequiredNever = true;
                 }
@@ -165,6 +195,10 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
 
     private getTypeId(node: ts.Node, context: Context): string {
         const nodeType = ts.isInterfaceDeclaration(node) ? "interface" : "class";
+<<<<<<< HEAD
         return extendKey(`${nodeType}-${getKey(node, context)}`, node, context, this.config, true);
+=======
+        return `${nodeType}-${getKey(node, context)}`;
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
     }
 }

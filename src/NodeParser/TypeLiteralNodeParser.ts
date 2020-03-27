@@ -5,12 +5,19 @@ import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
 import { ReferenceType } from "../Type/ReferenceType";
 import { isNodeHidden } from "../Utils/isHidden";
+<<<<<<< HEAD
 import { isExcludedProp } from "../Utils";
 import { getKey } from "../Utils/nodeKey";
 import { Config } from "../Config";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
     public constructor(private childNodeParser: NodeParser, private config: Config) {}
+=======
+import { getKey } from "../Utils/nodeKey";
+
+export class TypeLiteralNodeParser implements SubNodeParser {
+    public constructor(private childNodeParser: NodeParser) {}
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
     public supportsNode(node: ts.TypeLiteralNode): boolean {
         return node.kind === ts.SyntaxKind.TypeLiteral;
@@ -36,16 +43,25 @@ export class TypeLiteralNodeParser implements SubNodeParser {
 
         const properties = node.members
             .filter(ts.isPropertySignature)
+<<<<<<< HEAD
             .filter(propertyNode => !isNodeHidden(propertyNode))
             .filter(propertyNode => !isExcludedProp(propertyNode, context, this.config))
             .map(propertyNode => {
+=======
+            .filter((propertyNode) => !isNodeHidden(propertyNode))
+            .map((propertyNode) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
                 const type = this.childNodeParser.createType(propertyNode.type!, context);
                 const objectProperty = new ObjectProperty(propertySymbol.getName(), type, !propertyNode.questionToken);
 
                 return objectProperty;
             })
+<<<<<<< HEAD
             .filter(prop => {
+=======
+            .filter((prop) => {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                 if (prop.isRequired() && prop.getType() === undefined) {
                     hasRequiredNever = true;
                 }

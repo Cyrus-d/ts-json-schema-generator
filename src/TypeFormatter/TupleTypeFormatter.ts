@@ -16,9 +16,15 @@ export class TupleTypeFormatter implements SubTypeFormatter {
     public getDefinition(type: TupleType): Definition {
         const subTypes = type.getTypes();
 
+<<<<<<< HEAD
         const requiredElements = subTypes.filter(t => !(t instanceof OptionalType) && !(t instanceof RestType));
         const optionalElements = subTypes.filter(t => t instanceof OptionalType) as OptionalType[];
         const restElements = subTypes.filter(t => t instanceof RestType) as RestType[];
+=======
+        const requiredElements = subTypes.filter((t) => !(t instanceof OptionalType) && !(t instanceof RestType));
+        const optionalElements = subTypes.filter((t) => t instanceof OptionalType) as OptionalType[];
+        const restElements = subTypes.filter((t) => t instanceof RestType) as RestType[];
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
         const requiredDefinitions = requiredElements.map(item => this.childTypeFormatter.getDefinition(item));
         const optionalDefinitions = optionalElements.map(item => this.childTypeFormatter.getDefinition(item));

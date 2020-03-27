@@ -21,7 +21,11 @@ export class IntersectionTypeFormatter implements SubTypeFormatter {
         // See https://github.com/vega/ts-json-schema-generator/issues/62
 
         return types.length > 1
+<<<<<<< HEAD
             ? types.reduce(getAllOfDefinitionReducer(this.childTypeFormatter, true), {
+=======
+            ? types.reduce(getAllOfDefinitionReducer(this.childTypeFormatter), {
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
                   type: "object",
                   additionalProperties: false,
               } as Definition)

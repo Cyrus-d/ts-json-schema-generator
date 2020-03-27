@@ -26,6 +26,10 @@ export class UnionType extends BaseType {
         return "(" + this.types.map(type => type.getName()).join("|") + ")";
     }
 
+    public getName(): string {
+        return "(" + this.types.map((type) => type.getName()).join("|") + ")";
+    }
+
     public getTypes(): BaseType[] {
         return this.types;
     }

@@ -2,8 +2,12 @@ import * as stringify from "json-stable-stringify";
 import * as ts from "typescript";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
+<<<<<<< HEAD
 import { getKey, ignoreLimits, hasLimitOptions } from "./Utils";
 import { Config } from "./Config";
+=======
+import { getKey } from "./Utils/nodeKey";
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
 export class Context {
     private cacheKey: string | null = null;
@@ -11,9 +15,12 @@ export class Context {
     private parameters: string[] = [];
     private reference?: ts.Node;
     private defaultArgument = new Map<string, BaseType | undefined>();
+<<<<<<< HEAD
     private parentContext?: Context;
     public ignoreLimits? = false;
     private skipNode: ts.Node;
+=======
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
     public constructor(reference?: ts.Node, parentContext?: Context) {
         this.reference = reference;
@@ -33,6 +40,7 @@ export class Context {
         this.defaultArgument.set(parameterName, argumentType);
     }
 
+<<<<<<< HEAD
     public getCacheKey(config?: Config) {
         if (this.cacheKey == null) {
             this.cacheKey = stringify([
@@ -43,6 +51,13 @@ export class Context {
                     ? ts.SyntaxKind.ExpressionWithTypeArguments
                     : "",
                 hasLimitOptions(config) && ignoreLimits(this) ? "recursion" : "",
+=======
+    public getCacheKey() {
+        if (this.cacheKey == null) {
+            this.cacheKey = stringify([
+                this.reference ? getKey(this.reference, this) : "",
+                this.arguments.map((argument) => argument?.getId()),
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
             ]);
         }
         return this.cacheKey;

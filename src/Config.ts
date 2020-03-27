@@ -10,6 +10,7 @@ export interface Config {
     skipTypeCheck?: boolean;
     encodeRefs?: boolean;
     extraTags?: string[];
+<<<<<<< HEAD
     setObjectIdentifier?: boolean;
     maxDepth?: number;
     /**
@@ -42,6 +43,8 @@ export interface Config {
      *   Will only generate schema for the property names included in the list
      */
     includeProperties?: string[];
+=======
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 }
 
 export const DEFAULT_CONFIG: Config = {
@@ -53,5 +56,8 @@ export const DEFAULT_CONFIG: Config = {
     skipTypeCheck: false,
     encodeRefs: true,
     extraTags: [],
+<<<<<<< HEAD
     showUnknownTypeInfo: true,
+=======
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 };

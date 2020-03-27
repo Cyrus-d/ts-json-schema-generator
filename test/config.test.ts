@@ -32,7 +32,11 @@ function assertSchema(name: string, userConfig: Config & { type: string }, tscon
         );
 
         const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${name}/schema.json`), "utf8"));
+<<<<<<< HEAD
         const actual: any = JSON.parse(JSON.stringify(generator.createSchema(config.type!)));
+=======
+        const actual: any = JSON.parse(JSON.stringify(generator.createSchema(config.type)));
+>>>>>>> ac96066ddc18eda5845872f71f4e0a51ec689b5e
 
         expect(typeof actual).toBe("object");
         expect(actual).toEqual(expected);
